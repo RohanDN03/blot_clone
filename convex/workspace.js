@@ -1,18 +1,4 @@
-// export const CreateWorkspace = v.action({
-//   args: {
-//     messages:v.any(),
-//     user:v.id('users')
-// },
-//     handler: async (ctx, args) => {
-//         const workspaceId = await ctx.db.insert('workspace',{
-//             messsages:args.messages,
-//             user:args.user
-//         })
-//         return workspaceId;
-//     }
-    
 
-// })
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
@@ -56,18 +42,6 @@ export const UpdateMessages = mutation({
     });
   }
 });
-
-// export const UpdateFiles = mutation({
-//   args: {
-//     workspaceId: v.id("workspace"),
-//     filesData: v.any(), // ✅ enforce same structure
-//   },
-//   handler: async (ctx, args) => {
-//     return await ctx.db.patch(args.workspaceId, {
-//       fileData: args.files,
-//     });
-//   }
-// });
 
 export const UpdateFiles = mutation({
   args: {

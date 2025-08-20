@@ -32,13 +32,13 @@ function SideBarFooter() {
     if (option?.path) {
       router.push(option.path);
     } else if (option?.action === "signout") {
-      // ✅ Clear local storage
+      //  Clear local storage
       localStorage.removeItem("user");
 
-      // ✅ Reset context
+      //  Reset context
       setUserDetail(null);
 
-      // ✅ Redirect to home/login
+      // Redirect to home/login
       router.push("/");
     }
   };
