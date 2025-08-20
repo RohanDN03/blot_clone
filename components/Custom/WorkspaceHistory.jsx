@@ -10,16 +10,20 @@ function WorkspaceHistory() {
     const convex=useConvex();
     const [workspaceList,setWorkspaceList]=useState();
     const {toggleSidebar} = useSidebar();
-    useEffect(()=>{
-        userDetail && GetAllWorkspace();
-    },[userDetail])
-    const GetAllWorkspace=async()=>{
-        const result =await convex.query(api.workspace.GetAllWorkspace,{
-            userId:userDetail?._id
-        });
-        setWorkspaceList(result);
-        console.log(result);
+   useEffect(() => {
+    if (userDetail?._id) {
+        GetAllWorkspace();
     }
+}, [userDetail]);
+
+const GetAllWorkspace = async () => {
+    const result = await convex.query(
+        api.workspace.GetAllWorkspace,
+        userDetail?._id ? { userId: userDetail._id } : undefined
+    );
+    setWorkspaceList(result);
+    console.log(result);
+};
   return (
     <div>
         <h2 className='font-medium text-lg'>Your Chats</h2>

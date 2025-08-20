@@ -1,4 +1,5 @@
-import React from 'react'
+"use client"
+import React, { useContext } from 'react'
 import {
   Sidebar,
   SidebarContent,
@@ -11,7 +12,10 @@ import Image from "next/image"
 import { Button } from '../ui/button'
 import WorkspaceHistory from './WorkspaceHistory'
 import SideBarFooter from './SideBarFooter'
+import { UserDetailContext } from '@/app/context/UserDetailsContext'
 function AppSideBar() {
+  const { userDetail } = useContext(UserDetailContext);
+  if (!userDetail?._id) return null;
   return (
     <Sidebar>
       <SidebarHeader className='p-5'>

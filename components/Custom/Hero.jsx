@@ -57,9 +57,12 @@ export default function Hero() {
             onChange={(event)=>setUserInput(event.target.value)}
             className='outline-none bg-transparent w-full h-32 max-h-56 resize'
             />
-            {userInput &&<ArrowRight 
-                onClick={()=>onGenerate(userInput)}
-                className='bg-blue-500 p-2 h-10 w-10 rounded-md cursor-pointer'/>}
+            {userInput && (
+            <ArrowRight 
+                onClick={() => onGenerate(userInput)}
+                className='bg-blue-500 p-2 h-10 w-10 rounded-md cursor-pointer'
+            />
+            )}
         </div>
         <div>
              <Link className='h-5 w-5'/>

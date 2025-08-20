@@ -31,6 +31,8 @@ import ConvexClientProvider from "./ConvexClientProvider";
 import { Toaster } from "sonner";
 import Header from "@/components/Custom/Header";
 import { ActionProvider } from "@/app/context/ActionContext";
+import AppSideBar from "@/components/Custom/AppSideBar";
+
 
 export const metadata = {
   title: "Create Next App",
@@ -38,6 +40,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
@@ -45,9 +48,12 @@ export default function RootLayout({ children }) {
           <Provider>
             <ActionProvider>
               <Header />
-              <main className="flex flex-col items-center justify-center min-h-screen w-full">
-                  {children}
-              </main>
+                  <div className="flex w-full min-h-screen">
+                    <AppSideBar />
+                    <main className="flex flex-col items-center justify-center min-h-screen flex-1">
+                      {children}
+                    </main>
+                  </div>
               <Toaster />
             </ActionProvider>
           </Provider>

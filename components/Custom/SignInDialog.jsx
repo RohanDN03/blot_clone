@@ -14,42 +14,45 @@ import axios from 'axios';
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { v4 as uuid4 } from 'uuid';
-
+import { useConvex } from "convex/react";
 function SignInDialog({ openDialog, closeDialog }) {
   const { setUserDetail } = useContext(UserDetailContext);
   const CreateUser = useMutation(api.users.CreateUser);
-
+  const convex = useConvex();
   const googleLogin = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-      try {
-        const userInfo = await axios.get(
-          'https://www.googleapis.com/oauth2/v3/userinfo',
-          { headers: { Authorization: `Bearer ${tokenResponse?.access_token}` } },
-        );
+  onSuccess: async (tokenResponse) => {
+    try {
+      const userInfo = await axios.get(
+        'https://www.googleapis.com/oauth2/v3/userinfo',
+        { headers: { Authorization: `Bearer ${tokenResponse?.access_token}` } },
+      );
 
-        const user = userInfo.data;
-        // console.log("Google User Info:", user);
+      const user = userInfo.data;
 
-        await CreateUser({
-          name: user?.name,
-          email: user?.email,
-          picture: user?.picture,
-          uid: uuid4(),
-        });
+      // Create user in Convex DB
+      await CreateUser({
+        name: user?.name,
+        email: user?.email,
+        picture: user?.picture,
+        uid: uuid4(),
+      });
 
-        if(typeof window !== "undefined") {
-          localStorage.setItem('user', JSON.stringify(user));
-        }
+      // Fetch user from Convex DB (replace with your actual query)
+      const userFromDb = await convex.query(api.users.getUser, { email: user.email });
 
-        setUserDetail(user);
-
-        closeDialog(false);
-      } catch (error) {
-        console.error("Google login error:", error);
+      if (typeof window !== "undefined") {
+        localStorage.setItem('user', JSON.stringify(userFromDb));
       }
-    },
-    onError: errorResponse => console.error("Google login failed:", errorResponse),
-  });
+
+      setUserDetail(userFromDb); // <-- Set the DB user (with _id) here
+
+      closeDialog(false);
+    } catch (error) {
+      console.error("Google login error:", error);
+    }
+  },
+  onError: errorResponse => console.error("Google login failed:", errorResponse),
+});
 
   return (
     <Dialog open={openDialog} onOpenChange={closeDialog}>
